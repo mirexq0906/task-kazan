@@ -1,0 +1,59 @@
+<template>
+  <label class="checkbox">
+    <input
+      @change="changeCheckbox"
+      :checked="modelValue"
+      class="checkbox__disabled"
+      type="checkbox"
+    />
+    <span class="checkbox__active">
+      <img src="../../assets/icon-checkbox.svg" alt="" />
+    </span>
+    <span class="checkbox__name"><slot></slot></span>
+  </label>
+</template>
+
+<script>
+export default {
+  props: {
+    modelValue: {
+      type: Boolean,
+    },
+  },
+  methods: {
+    changeCheckbox(e) {
+      this.$emit("update:modelValue", e.target.checked);
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  &__disabled {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+  }
+  &__active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    width: 20px;
+    border: 2px solid #4f4f4f;
+  }
+  &__active img {
+    opacity: 0;
+    transition: 200ms opacity;
+  }
+  &__disabled:checked ~ &__active img {
+    opacity: 1;
+  }
+}
+</style>
