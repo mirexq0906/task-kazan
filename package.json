@@ -27,7 +27,10 @@
     "imagemin-gifsicle": "^7.0.0",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-optipng": "^8.0.0",
-    "imagemin-pngquant": "^9.0.2"
+    "imagemin-pngquant": "^9.0.2",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "html-webpack-plugin": "^5.5.3"
   },
   "scripts": {
     "start": "webpack --watch --mode=development --config webpack.dev.js",
@@ -35,8 +38,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "html-webpack-plugin": "^5.5.3"
-  }
+  "license": "ISC"
 }

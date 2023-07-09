@@ -2,9 +2,9 @@
   <section class="app">
     <div class="container">
       <div class="app__box-title">
-        <h1 class="app__title">{{ title }}</h1>
+        <h1 class="app__title">{{ getTitle }}</h1>
         <button
-          @click="openModal({ active: true, name: 'titleModal' })"
+          @click="OPEN_MODAL({ active: true, name: 'titleModal' })"
           class="app__btn btn"
         >
           Изменить
@@ -13,7 +13,7 @@
 
       <div class="app__row">
         <button
-          @click="openModal({ active: true, name: 'taskModal' })"
+          @click="OPEN_MODAL({ active: true, name: 'taskModal' })"
           class="app__btn btn"
         >
           Создать задачу
@@ -36,7 +36,7 @@
         </button>
 
         <button
-          @click="openModal({ active: true, name: 'importModal' })"
+          @click="OPEN_MODAL({ active: true, name: 'importModal' })"
           class="btn"
         >
           Загрузить проект
@@ -45,38 +45,41 @@
         <export-app />
       </div>
 
-      <filter-list :filters="filters" @applyFilter="applyFilter" />
+      <filter-list :filters="getFilters" @applyFilter="applyFilter" />
 
       <task-list :tasks="sortedAndSearchedPosts" />
 
       <my-modal>
         <task-form
-          v-if="currentModal == 'taskModal' || currentModal == 'subTaskModal'"
+          v-if="getCurrentModal == 'taskModal' || getCurrentModal == 'subTaskModal'"
         />
         <title-form
           v-else-if="
-            currentModal == 'titleModal' || currentModal == 'taskTitleModal'
+            getCurrentModal == 'titleModal' || getCurrentModal == 'taskTitleModal'
           "
         />
-        <filter-form v-else-if="currentModal == 'filterModal'" />
-        <import-form v-else-if="currentModal == 'importModal'" />
+        <filter-form v-else-if="getCurrentModal == 'filterModal'" />
+        <import-form v-else-if="getCurrentModal == 'importModal'" />
       </my-modal>
     </div>
   </section>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import TaskForm from "./components/TaskForm.vue";
 import TitleForm from "./components/TitleForm.vue";
 import MyDropdown from "./components/UI/MyDropdown.vue";
 import MyModal from "./components/UI/MyModal.vue";
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 import TaskList from "./components/TaskList.vue";
 import FilterForm from "./components/FilterForm.vue";
 import FilterList from "./components/FilterList.vue";
 import ExportApp from "./components/ExportApp.vue";
 import ImportForm from "./components/ImportForm.vue";
-export default {
+import { Task } from "./store";
+
+export default defineComponent({
   components: {
     MyDropdown,
     MyModal,
@@ -90,51 +93,42 @@ export default {
   },
   data() {
     return {
-      dropdownSort: "",
-      searchQuery: "",
+      dropdownSort: "" as string,
+      searchQuery: "" as string,
       dropdownOptions: [
         { value: "name", name: "По названию" },
         { value: "desc", name: "По описанию" },
-      ],
+      ] as { value: string; name: string }[],
     };
   },
   methods: {
-    ...mapMutations({
-      openModal: "openModal",
-      setTaskData: "setTaskData",
-    }),
-    saveFilter() {
-      this.setTaskData({
+    ...mapMutations(["OPEN_MODAL", "SET_TASK_DATA"]),
+    saveFilter(): void {
+      this.SET_TASK_DATA({
         dropdownSort: this.dropdownSort,
         searchQuery: this.searchQuery,
       });
-      this.openModal({ active: true, name: "filterModal" });
+      this.OPEN_MODAL({ active: true, name: "filterModal" });
     },
-    applyFilter(item) {
-      (this.dropdownSort = item.dropdownSort),
-        (this.searchQuery = item.searchQuery),
-        console.log(this.dropdownSort);
+    applyFilter(item: { dropdownSort: string; searchQuery: string }): void {
+      this.dropdownSort = item.dropdownSort;
+      this.searchQuery = item.searchQuery;
     },
   },
   computed: {
-    ...mapState({
-      currentModal: (state) => state.modals.currentModal,
-      title: (state) => state.title,
-      tasks: (state) => state.tasks,
-      filters: (state) => state.filters,
-    }),
-    sortedTasks() {
-      return [...this.tasks].sort((task1, task2) =>
+    ...mapGetters(['getCurrentModal', 'getTitle', 'getTasks', 'getFilters']),
+    sortedTasks(): Task[] {
+      return [...this.getTasks].sort((task1: Task, task2: Task) =>
         task1[this.dropdownSort]?.localeCompare(task2[this.dropdownSort])
       );
     },
-    sortedAndSearchedPosts() {
-      return this.sortedTasks.filter((task) =>
+    sortedAndSearchedPosts(): Task[] {
+      return this.sortedTasks.filter((task: Task) =>
         task.name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     },
   },
-};
+});
 </script>
 
 <style lang="scss">

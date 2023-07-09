@@ -3,7 +3,6 @@
     <transition-group name="task-list">
       <task-item
         v-for="task in tasks"
-        :index="index"
         :key="task.id"
         :task="task"
         :data-task-id="task.id"
@@ -13,35 +12,35 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import TaskItem from "./TaskItem.vue";
 import { mapMutations } from "vuex";
-export default {
+import { Task } from "../store";
+export default defineComponent({
   components: { TaskItem },
   props: {
     tasks: {
-      type: Object,
+      type: Array as () => Task[],
       required: true,
     },
   },
   methods: {
-    ...mapMutations({
-      dropTasks: "dropTasks",
-    }),
-    onDragOver(event) {
+    ...mapMutations(["DROP_TASK"]),
+    onDragOver(event: Event) {
       event.preventDefault();
     },
-    onDrop(event) {
+    onDrop(event: DragEvent) {
       event.preventDefault();
-      const taskData = JSON.parse(event.dataTransfer.getData("task"));
-      const targetElement = event.target.closest(".app__item");
+      const taskData = JSON.parse(event.dataTransfer!.getData("task")) as Task;
+      const targetElement = (event.target as HTMLElement).closest(".app__item");
       if (targetElement) {
-        const targetId = +targetElement.dataset.taskId;
-        this.dropTasks({ taskData: taskData, targetId });
+        const targetId = +targetElement.getAttribute("data-task-id")!;
+        this.DROP_TASK({ taskData: taskData, targetId });
       }
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

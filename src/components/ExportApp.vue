@@ -2,38 +2,31 @@
   <button class="btn" @click="downloadProject">Скачать проект</button>
 </template>
 
-<script>
-import { mapState } from "vuex";
-export default {
+<script lang="ts">
+import { mapGetters } from "vuex";
+import { defineComponent } from "vue";
+export default defineComponent({
   methods: {
-    downloadProject() {
-      // Экспорт данных из sessionStorage
+    downloadProject(): void {
       const exportedData = JSON.stringify(sessionStorage);
 
+      const url = URL.createObjectURL(
+        new Blob([exportedData], { type: "application/json" })
+      );
 
-      // Создание ссылки на скачивание файла
-      const url = URL.createObjectURL(new Blob([exportedData], { type: 'application/json' }));
-
-      console.log(url)
-
-      // Создание ссылки и автоматическое скачивание файла
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = `${this.title.length ? this.title : 'empty'}.json`;
+      link.download = `${this.getTitle.length ? this.getTitle : "empty"}.json`;
       link.click();
 
-      // Очистка ссылки после скачивания
       URL.revokeObjectURL(url);
     },
   },
-    computed: {
-    ...mapState({
-      title: (state) => state.title,
-    }),
+  computed: {
+    ...mapGetters(['getTitle']),
   },
-};
+});
 </script>
 
 <style scoped lang="scss">
-
 </style>

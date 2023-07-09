@@ -3,9 +3,9 @@
     <h3
       class="form__title"
       v-html="
-        currentModal == 'titleModal'
+        getCurrentModal == 'titleModal'
           ? 'Изменить заголовок'
-          : currentModal == 'taskTitleModal'
+          : getCurrentModal == 'taskTitleModal'
           ? 'Изменить название задачи'
           : ''
       "
@@ -16,9 +16,9 @@
         class="input"
         type="text"
         :placeholder="
-          currentModal == 'titleModal'
+          getCurrentModal == 'titleModal'
             ? 'Введите заголовок'
-            : currentModal == 'taskTitleModal'
+            : getCurrentModal == 'taskTitleModal'
             ? 'Введите название задачи'
             : ''
         "
@@ -28,46 +28,44 @@
   </form>
 </template>
 
-<script>
-import { mapMutations, mapState } from "vuex";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapMutations, mapGetters } from "vuex";
 
-export default {
+export default defineComponent({
   data() {
     return {
-      title: "",
+      title: "" as String,
     };
   },
   methods: {
-    ...mapMutations({
-      setTitle: "setTitle",
-      closeModal: "closeModal",
-      setTaskData: "setTaskData",
-      updateTaskName: "updateTaskName",
-    }),
-    changeTitle() {
-      if (this.currentModal == "titleModal") {
-        this.setTitle(this.title);
-        this.closeModal();
+    ...mapMutations([
+      "SET_TITLE",
+      "CLOSE_MODAL",
+      "SET_TASK_DATA",
+      "UPDATE_TASK_NAME",
+    ]),
+    changeTitle(): void {
+      if (this.getCurrentModal == "titleModal") {
+        this.SET_TITLE(this.title);
+        this.CLOSE_MODAL();
         this.title = "";
-      } else if (this.currentModal == "taskTitleModal") {
-        this.setTaskData({
-          id: this.taskData.id,
-          level: this.taskData.level,
+      } else if (this.getCurrentModal == "taskTitleModal") {
+        this.SET_TASK_DATA({
+          id: this.getTaskData.id,
+          level: this.getTaskData.level,
           name: this.title,
         }),
-          this.updateTaskName();
-        this.closeModal();
+          this.UPDATE_TASK_NAME();
+        this.CLOSE_MODAL();
         this.title = "";
       }
     },
   },
   computed: {
-    ...mapState({
-      currentModal: (state) => state.modals.currentModal,
-      taskData: (state) => state.taskData,
-    }),
+    ...mapGetters(["getCurrentModal", "getTaskData"]),
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     mode: "development",
-    entry: "./src/main.js",
+    entry: "./src/main.ts",
     devtool: "source-map",
     output: {
         filename: "main.min.js",
@@ -15,7 +15,7 @@ module.exports = {
         clean: true,
     },
     resolve: {
-        extensions: [".js", ".vue", ".json"],
+        extensions: [".ts", ".js", ".vue", ".json"],
         alias: {
             "@": path.resolve(__dirname, "src"),
         },
@@ -27,6 +27,14 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.ts$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                },
+            },
             {
                 test: /\.vue$/,
                 loader: "vue-loader",

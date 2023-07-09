@@ -13,35 +13,31 @@
   </form>
 </template>
 
-<script>
-import { mapMutations, mapState } from "vuex";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+import { mapMutations, mapGetters } from "vuex";
+export default defineComponent({
   data() {
     return {
-      name: "",
+      name: "" as String,
     };
   },
   methods: {
-    ...mapMutations({
-      setFilters: "setFilters",
-      closeModal: "closeModal",
-    }),
-    addFilter() {
-      this.setFilters({
+    ...mapMutations(["SET_FILTERS", "CLOSE_MODAL"]),
+    addFilter(): void {
+      this.SET_FILTERS({
         name: this.name,
-        dropdownSort: this.taskData.dropdownSort,
-        searchQuery: this.taskData.searchQuery,
+        dropdownSort: this.getTaskData.dropdownSort,
+        searchQuery: this.getTaskData.searchQuery,
       });
-      this.closeModal();
+      this.CLOSE_MODAL();
       this.name = "";
     },
   },
   computed: {
-    ...mapState({
-      taskData: (state) => state.taskData,
-    }),
+    ...mapGetters(["getTaskData"]),
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -20,46 +20,40 @@
   </form>
 </template>
 
-<script>
-import { mapMutations, mapState } from "vuex";
-export default {
+<script  lang="ts">
+import { defineComponent } from "vue";
+import { mapMutations, mapGetters } from "vuex";
+export default defineComponent({
   data() {
     return {
-      name: "",
-      desc: "",
+      name: "" as String,
+      desc: "" as String,
     };
   },
   methods: {
-    ...mapMutations({
-      createTask: "createTask",
-      setTaskData: "setTaskData",
-      closeModal: "closeModal",
-    }),
-    createFormTask() {
-      this.setTaskData({
+    ...mapMutations(["CREATE_TASK", "SET_TASK_DATA", "CLOSE_MODAL"]),
+    createFormTask(): void {
+      this.SET_TASK_DATA({
         id:
-          this.currentModal == "taskModal"
+          this.getCurrentModal == "taskModal"
             ? null
-            : this.currentModal == "subTaskModal"
-            ? this.taskData.id
+            : this.getCurrentModal == "subTaskModal"
+            ? this.getTaskData.id
             : "",
         name: this.name,
         desc: this.desc,
       });
 
-      this.createTask();
-      this.closeModal();
+      this.CREATE_TASK();
+      this.CLOSE_MODAL();
       this.name = "";
       this.desc = "";
     },
   },
   computed: {
-    ...mapState({
-      taskData: (state) => state.taskData,
-      currentModal: (state) => state.modals.currentModal,
-    }),
+    ...mapGetters(["getTaskData", "getCurrentModal"]),
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

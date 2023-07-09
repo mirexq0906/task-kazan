@@ -13,19 +13,20 @@
   </label>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent ({
   props: {
     modelValue: {
       type: Boolean,
     },
   },
   methods: {
-    changeCheckbox(e) {
-      this.$emit("update:modelValue", e.target.checked);
+    changeCheckbox(e: Event) :void {
+      this.$emit("update:modelValue", (e.target as HTMLInputElement).checked);
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

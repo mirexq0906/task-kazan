@@ -27,11 +27,16 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+interface Option {
+  name: string;
+  value: string;
+}
+export default defineComponent({
   props: {
     options: {
-      type: Array,
+      type: Array as () => Option[],
       required: true,
     },
     modelValue: {
@@ -40,26 +45,30 @@ export default {
   },
   data() {
     return {
-      show: false,
-      activeOption: "",
+      show: false as Boolean,
+      activeOption: "" as String,
     };
   },
   methods: {
-    changeOption(option) {
+    changeOption(option: Option): void {
       this.$emit("update:modelValue", option.value);
       this.show = !this.show;
     },
   },
   watch: {
-    modelValue() {
-      for (let i = 0; i < this.options.length; i++) {
-        if (this.options[i].value === this.modelValue) {
-          this.activeOption = this.options[i].name;
+    modelValue(newValue): void {
+      if (!newValue.length) {
+        this.activeOption = "";
+      } else {
+        for (let i: number = 0; i < this.options.length; i++) {
+          if (this.options[i].value === newValue) {
+            this.activeOption = this.options[i].name;
+          }
         }
       }
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

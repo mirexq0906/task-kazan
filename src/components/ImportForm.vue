@@ -19,48 +19,50 @@
   </form>
 </template>
 
-<script>
-import { mapActions, mapMutations } from "vuex";
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   data() {
     return {
-      selectedFile: "Выберите файл",
-      file: "",
+      selectedFile: "Выберите файл" as String,
+      file: null as File | null,
     };
   },
   methods: {
-    ...mapActions({
-      updateData: "updateData",
-    }),
-    ...mapMutations({
-      closeModal: "closeModal",
-    }),
-    handleFile(event) {
-      this.file = event.target.files[0];
-      this.selectedFile = this.file ? this.file.name : "Выберите файл";
+    handleFile(event: Event): void {
+      const input = event.target as HTMLInputElement;
+      if (input.files) {
+        this.file = input.files[0];
+        this.selectedFile = this.file.name;
+      } else {
+        this.file = null;
+        this.selectedFile = "Выберите файл";
+      }
     },
-    importFile(e) {
+    importFile(e: Event): void {
       e.preventDefault();
 
       if (!this.file) {
-        console.log("Файл не выбран.");
+        this.selectedFile = "Файл не выбран.";
         return;
       }
       const reader = new FileReader();
 
-      reader.onload = function (event) {
-        const fileContent = event.target.result;
+      reader.onload = function (event: ProgressEvent<FileReader>) {
+        const fileContent = event.target?.result;
 
-        const jsonData = JSON.parse(fileContent);
-        for (var key in jsonData) {
-          sessionStorage.setItem(key, jsonData[key]);
+        if (typeof fileContent === "string") {
+          const jsonData = JSON.parse(fileContent);
+          for (var key in jsonData) {
+            sessionStorage.setItem(key, jsonData[key]);
+          }
         }
       };
       reader.readAsText(this.file);
       window.location.reload();
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

@@ -11,19 +11,28 @@
   </ul>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+interface filter {
+  name: string;
+  dropdownSort: string;
+  searchQuery: string;
+}
+export default defineComponent({
   props: {
     filters: {
-      type: Object,
+      type: Array as () => filter[],
     },
   },
   methods: {
-    applyFilter(item) {
-      this.$emit("applyFilter", item);
+    applyFilter(item: filter) {
+      this.$emit("applyFilter", {
+        dropdownSort: item.dropdownSort,
+        searchQuery: item.searchQuery,
+      });
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">

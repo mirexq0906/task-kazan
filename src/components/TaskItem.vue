@@ -10,8 +10,8 @@
         <button
           class="btn"
           @click="
-            setTaskData({ id: this.task.id });
-            openModal({ active: true, name: 'taskTitleModal' });
+            SET_TASK_DATA({ id: this.task.id });
+            OPEN_MODAL({ active: true, name: 'taskTitleModal' });
           "
         >
           Изменить
@@ -22,8 +22,8 @@
     <div class="task__controls">
       <button
         @click="
-          setTaskData({ id: this.task.id });
-          openModal({ active: true, name: 'subTaskModal' });
+          SET_TASK_DATA({ id: this.task.id });
+          OPEN_MODAL({ active: true, name: 'subTaskModal' });
         "
         class="btn"
       >
@@ -31,8 +31,8 @@
       </button>
       <button
         @click="
-          setTaskData({ id: this.task.id });
-          deleteTask();
+          SET_TASK_DATA({ id: this.task.id });
+          DELETE_TASK();
         "
         class="task__btn-delete btn"
       >
@@ -49,36 +49,39 @@
   </div>
 </template> 
 
-<script>
+<script  lang="ts">
+import { defineComponent } from "vue";
 import MyCheckbox from "./UI/MyCheckbox.vue";
 import { mapMutations } from "vuex";
-export default {
+import { Task } from "../store";
+export default defineComponent({
   components: { MyCheckbox },
   props: {
     task: {
-      type: Object,
+      type: Object as () => Task,
+      required: true,
     },
   },
   data() {
     return {
-      finish: this.task.finish,
+      finish: this.task.finish as Boolean,
     };
   },
   methods: {
-    ...mapMutations({
-      setTaskData: "setTaskData",
-      finishTask: "finishTask",
-      deleteTask: "deleteTask",
-      openModal: "openModal",
-    }),
+    ...mapMutations([
+      "SET_TASK_DATA",
+      "FINISH_TASK",
+      "DELETE_TASK",
+      "OPEN_MODAL",
+    ]),
   },
   watch: {
-    finish() {
-      this.setTaskData({ id: this.task.id, finish: this.finish });
-      this.finishTask();
+    finish(): void {
+      this.SET_TASK_DATA({ id: this.task.id, finish: this.finish });
+      this.FINISH_TASK();
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">
