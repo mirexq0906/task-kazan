@@ -122,7 +122,7 @@ const mutations: Mutations = {
     const currentIndex = state.tasks.findIndex(
       (task) => task.id === taskData.id
     );
-    if (currentIndex === -1) {
+    if (currentIndex === -1 || !targetId) {
       state.tasks.push(taskData);
       sessionStorage.setItem("myData", JSON.stringify(state.tasks));
     } else {

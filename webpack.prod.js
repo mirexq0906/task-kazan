@@ -9,14 +9,14 @@ const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const ImageminWebpWebpackPlugin = require("imagemin-webp-webpack-plugin");
 module.exports = {
     mode: "production",
-    entry: "./src/main.js",
+    entry: "./src/main.ts",
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "./build/"),
         clean: true,
     },
     resolve: {
-        extensions: [".js", ".vue", ".json"],
+        extensions: [".ts", ".js", ".vue", ".json"],
         alias: {
             "@": path.resolve(__dirname, "src"),
         },
@@ -28,6 +28,14 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.ts$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.vue$/],
+                },
+            },
             {
                 test: /\.vue$/,
                 loader: "vue-loader",

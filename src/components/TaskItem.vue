@@ -1,5 +1,5 @@
 <template>
-  <div class="task" v-draggable="{ task: task, name: 'task' }">
+  <div v-draggable="{ task: task, name: 'task' }" class="task">
     <div class="task__header">
       Задача № {{ task.id }} -
       <span v-text="finish ? 'Задача выполнена' : 'Ждет выполнения'"></span>
@@ -10,7 +10,7 @@
         <button
           class="btn"
           @click="
-            SET_TASK_DATA({ id: this.task.id });
+            SET_TASK_DATA({ id: task.id });
             OPEN_MODAL({ active: true, name: 'taskTitleModal' });
           "
         >
@@ -21,20 +21,20 @@
     </div>
     <div class="task__controls">
       <button
+        class="btn"
         @click="
-          SET_TASK_DATA({ id: this.task.id });
+          SET_TASK_DATA({ id: task.id });
           OPEN_MODAL({ active: true, name: 'subTaskModal' });
         "
-        class="btn"
       >
         Создать задачу
       </button>
       <button
+        class="task__btn-delete btn"
         @click="
-          SET_TASK_DATA({ id: this.task.id });
+          SET_TASK_DATA({ id: task.id });
           DELETE_TASK();
         "
-        class="task__btn-delete btn"
       >
         Удалить задачу
       </button>
@@ -50,10 +50,10 @@
 </template> 
 
 <script  lang="ts">
-import { defineComponent } from "vue";
-import MyCheckbox from "./UI/MyCheckbox.vue";
-import { mapMutations } from "vuex";
-import { Task } from "../store";
+import { defineComponent } from 'vue';
+import MyCheckbox from './UI/MyCheckbox.vue';
+import { mapMutations } from 'vuex';
+import { Task } from '../store';
 export default defineComponent({
   components: { MyCheckbox },
   props: {
@@ -64,22 +64,22 @@ export default defineComponent({
   },
   data() {
     return {
-      finish: this.task.finish as Boolean,
+      finish: this.task.finish as boolean,
     };
-  },
-  methods: {
-    ...mapMutations([
-      "SET_TASK_DATA",
-      "FINISH_TASK",
-      "DELETE_TASK",
-      "OPEN_MODAL",
-    ]),
   },
   watch: {
     finish(): void {
       this.SET_TASK_DATA({ id: this.task.id, finish: this.finish });
       this.FINISH_TASK();
     },
+  },
+  methods: {
+    ...mapMutations([
+      'SET_TASK_DATA',
+      'FINISH_TASK',
+      'DELETE_TASK',
+      'OPEN_MODAL',
+    ]),
   },
 });
 </script>

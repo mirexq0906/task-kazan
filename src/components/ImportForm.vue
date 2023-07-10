@@ -3,10 +3,10 @@
     <h3 class="form__title">Загрузить проект</h3>
     <div class="form__import import-form">
       <input
-        @change="handleFile"
-        class="import-form__disabled"
         id="file"
+        class="import-form__disabled"
         type="file"
+        @change="handleFile"
       />
       <label class="import-form__active" for="file">
         <span class="import-form__active-icon">
@@ -15,16 +15,16 @@
         <span class="import-form__active-name">{{ selectedFile }}</span>
       </label>
     </div>
-    <button @click="importFile" class="form__btn btn">Загрузить</button>
+    <button class="form__btn btn" @click="importFile">Загрузить</button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 export default defineComponent({
   data() {
     return {
-      selectedFile: "Выберите файл" as String,
+      selectedFile: 'Выберите файл' as string,
       file: null as File | null,
     };
   },
@@ -36,14 +36,14 @@ export default defineComponent({
         this.selectedFile = this.file.name;
       } else {
         this.file = null;
-        this.selectedFile = "Выберите файл";
+        this.selectedFile = 'Выберите файл';
       }
     },
     importFile(e: Event): void {
       e.preventDefault();
 
       if (!this.file) {
-        this.selectedFile = "Файл не выбран.";
+        this.selectedFile = 'Файл не выбран.';
         return;
       }
       const reader = new FileReader();
@@ -51,7 +51,7 @@ export default defineComponent({
       reader.onload = function (event: ProgressEvent<FileReader>) {
         const fileContent = event.target?.result;
 
-        if (typeof fileContent === "string") {
+        if (typeof fileContent === 'string') {
           const jsonData = JSON.parse(fileContent);
           for (var key in jsonData) {
             sessionStorage.setItem(key, jsonData[key]);

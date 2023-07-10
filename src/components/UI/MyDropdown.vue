@@ -1,24 +1,24 @@
 <template>
   <div class="dropdown">
-    <div @click="show = !show" :class="{ active: show }" class="dropdown__hero">
-      {{ modelValue.length ? activeOption : "Выберите фильтр" }}
+    <div class="dropdown__hero" :class="{ active: show }" @click="show = !show">
+      {{ modelValue.length ? activeOption : 'Выберите фильтр' }}
       <img src="../../assets/caret-down-fill.svg" alt="" />
     </div>
     <transition name="animate">
-      <ul class="dropdown__list" v-if="show">
+      <ul v-if="show" class="dropdown__list">
         <li
-          @click="changeOption({ name: '', value: '' })"
           class="dropdown__item"
           :class="{ disabled: !modelValue.length }"
+          @click="changeOption({ name: '', value: '' })"
         >
           Выберите фильтр
         </li>
         <li
-          @click="changeOption(option)"
           v-for="option in options"
           :key="option.value"
           class="dropdown__item"
           :class="{ disabled: option.name == activeOption }"
+          @click="changeOption(option)"
         >
           {{ option.name }}
         </li>
@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 interface Option {
   name: string;
   value: string;
@@ -41,31 +41,33 @@ export default defineComponent({
     },
     modelValue: {
       type: String,
+      default: '',
     },
   },
+  emits: ['update:modelValue'],
   data() {
     return {
-      show: false as Boolean,
-      activeOption: "" as String,
+      show: false as boolean,
+      activeOption: '' as string,
     };
-  },
-  methods: {
-    changeOption(option: Option): void {
-      this.$emit("update:modelValue", option.value);
-      this.show = !this.show;
-    },
   },
   watch: {
     modelValue(newValue): void {
       if (!newValue.length) {
-        this.activeOption = "";
+        this.activeOption = '';
       } else {
-        for (let i: number = 0; i < this.options.length; i++) {
+        for (let i = 0; i < this.options.length; i++) {
           if (this.options[i].value === newValue) {
             this.activeOption = this.options[i].name;
           }
         }
       }
+    },
+  },
+  methods: {
+    changeOption(option: Option): void {
+      this.$emit('update:modelValue', option.value);
+      this.show = !this.show;
     },
   },
 });
@@ -116,7 +118,7 @@ export default defineComponent({
     color: #54ad2a;
   }
   &__item.disabled:before {
-    content: "";
+    content: '';
     display: block;
     height: 60%;
     left: 7px;

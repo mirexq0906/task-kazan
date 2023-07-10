@@ -1,10 +1,10 @@
 <template>
   <ul class="list">
     <li
-      @click="applyFilter(item)"
-      class="item"
       v-for="(item, i) in filters"
       :key="i"
+      class="item"
+      @click="applyFilter(item)"
     >
       {{ item.name }}
     </li>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
 interface filter {
   name: string;
   dropdownSort: string;
@@ -22,11 +22,13 @@ export default defineComponent({
   props: {
     filters: {
       type: Array as () => filter[],
+      default: () => [],
     },
   },
+  emits: ['apply-filter'],
   methods: {
     applyFilter(item: filter) {
-      this.$emit("applyFilter", {
+      this.$emit('apply-filter', {
         dropdownSort: item.dropdownSort,
         searchQuery: item.searchQuery,
       });

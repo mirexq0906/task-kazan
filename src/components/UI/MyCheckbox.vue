@@ -1,10 +1,10 @@
 <template>
   <label class="checkbox">
     <input
-      @change="changeCheckbox"
-      :checked="modelValue"
       class="checkbox__disabled"
       type="checkbox"
+      :checked="modelValue"
+      @change="changeCheckbox"
     />
     <span class="checkbox__active">
       <img src="../../assets/icon-checkbox.svg" alt="" />
@@ -14,16 +14,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent ({
+import { defineComponent } from 'vue';
+export default defineComponent({
   props: {
     modelValue: {
       type: Boolean,
     },
   },
+  emits: ['update:modelValue'],
   methods: {
-    changeCheckbox(e: Event) :void {
-      this.$emit("update:modelValue", (e.target as HTMLInputElement).checked);
+    changeCheckbox(e: Event): void {
+      this.$emit('update:modelValue', (e.target as HTMLInputElement).checked);
     },
   },
 });

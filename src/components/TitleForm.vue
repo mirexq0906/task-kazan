@@ -2,7 +2,7 @@
   <form class="form" @click.prevent>
     <h3
       class="form__title"
-      v-html="
+      v-text="
         getCurrentModal == 'titleModal'
           ? 'Изменить заголовок'
           : getCurrentModal == 'taskTitleModal'
@@ -24,33 +24,36 @@
         "
       />
     </div>
-    <button @click="changeTitle" class="form__btn btn">Изменить</button>
+    <button class="form__btn btn" @click="changeTitle">Изменить</button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { mapMutations, mapGetters } from "vuex";
+import { defineComponent } from 'vue';
+import { mapMutations, mapGetters } from 'vuex';
 
 export default defineComponent({
   data() {
     return {
-      title: "" as String,
+      title: '' as string,
     };
+  },
+  computed: {
+    ...mapGetters(['getCurrentModal', 'getTaskData']),
   },
   methods: {
     ...mapMutations([
-      "SET_TITLE",
-      "CLOSE_MODAL",
-      "SET_TASK_DATA",
-      "UPDATE_TASK_NAME",
+      'SET_TITLE',
+      'CLOSE_MODAL',
+      'SET_TASK_DATA',
+      'UPDATE_TASK_NAME',
     ]),
     changeTitle(): void {
-      if (this.getCurrentModal == "titleModal") {
+      if (this.getCurrentModal == 'titleModal') {
         this.SET_TITLE(this.title);
         this.CLOSE_MODAL();
-        this.title = "";
-      } else if (this.getCurrentModal == "taskTitleModal") {
+        this.title = '';
+      } else if (this.getCurrentModal == 'taskTitleModal') {
         this.SET_TASK_DATA({
           id: this.getTaskData.id,
           level: this.getTaskData.level,
@@ -58,12 +61,9 @@ export default defineComponent({
         }),
           this.UPDATE_TASK_NAME();
         this.CLOSE_MODAL();
-        this.title = "";
+        this.title = '';
       }
     },
-  },
-  computed: {
-    ...mapGetters(["getCurrentModal", "getTaskData"]),
   },
 });
 </script>

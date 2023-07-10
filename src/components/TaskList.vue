@@ -13,10 +13,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import TaskItem from "./TaskItem.vue";
-import { mapMutations } from "vuex";
-import { Task } from "../store";
+import { defineComponent } from 'vue';
+import TaskItem from './TaskItem.vue';
+import { mapMutations } from 'vuex';
+import { Task } from '../store';
 export default defineComponent({
   components: { TaskItem },
   props: {
@@ -26,24 +26,29 @@ export default defineComponent({
     },
   },
   methods: {
-    ...mapMutations(["DROP_TASK"]),
-    onDragOver(event: Event) {
+    ...mapMutations(['DROP_TASK']),
+    onDragOver(event: Event): void {
       event.preventDefault();
     },
-    onDrop(event: DragEvent) {
+    onDrop(event: DragEvent): void {
       event.preventDefault();
-      const taskData = JSON.parse(event.dataTransfer!.getData("task")) as Task;
-      const targetElement = (event.target as HTMLElement).closest(".app__item");
+      const taskData = JSON.parse(event.dataTransfer!.getData('task')) as Task;
+      const targetElement = (event.target as HTMLElement).closest('.app__item');
+
+      let targetId: null | number = null;
       if (targetElement) {
-        const targetId = +targetElement.getAttribute("data-task-id")!;
-        this.DROP_TASK({ taskData: taskData, targetId });
+        targetId = +targetElement.getAttribute('data-task-id')!;
       }
+      this.DROP_TASK({ taskData: taskData, targetId });
     },
   },
 });
 </script>
 
 <style scoped lang="scss">
+.app__list {
+  min-height: 300px;
+}
 .task-list-item {
   display: inline-block;
   margin-right: 10px;

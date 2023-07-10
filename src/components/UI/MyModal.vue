@@ -1,15 +1,15 @@
 <template>
   <div
-    @click="CLOSE_MODAL"
     class="modal"
     :class="{ 'modal-active': getActiveModal }"
+    @click="CLOSE_MODAL"
   >
     <div
-      @click.stop
       class="modal__content"
       :class="{ 'modal__content-active': getActiveModal }"
+      @click.stop
     >
-      <span @click="CLOSE_MODAL" class="modal__close">
+      <span class="modal__close" @click="CLOSE_MODAL">
         <img src="../../assets/icon-close.svg" alt="" />
       </span>
       <slot></slot>
@@ -18,14 +18,14 @@
 </template>
 
 <script  lang="ts">
-import { defineComponent } from "vue";
-import { mapGetters, mapMutations } from "vuex";
+import { defineComponent } from 'vue';
+import { mapGetters, mapMutations } from 'vuex';
 export default defineComponent({
-  methods: {
-    ...mapMutations(["CLOSE_MODAL"]),
-  },
   computed: {
     ...mapGetters(['getActiveModal']),
+  },
+  methods: {
+    ...mapMutations(['CLOSE_MODAL']),
   },
 });
 </script>
@@ -46,7 +46,7 @@ export default defineComponent({
   overflow: auto;
   text-align: center;
   &::before {
-    content: "";
+    content: '';
     display: inline-block;
     font-size: 0;
     height: 100%;

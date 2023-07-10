@@ -1,4 +1,5 @@
 const path = require("path");
+const ESLintPlugin = require('eslint-webpack-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -96,12 +97,16 @@ module.exports = {
             template: './src/index.html'
         }),
 
+        new ESLintPlugin({
+            extensions: ['js', 'ts', 'vue'],
+        }),
+
         new MiniCssExtractPlugin({
             filename: "css/[name].min.css",
         }),
 
         new VueLoaderPlugin(),
-        
+
         new CopyPlugin({
             patterns: [
                 {

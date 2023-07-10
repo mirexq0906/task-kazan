@@ -1,5 +1,5 @@
 <template>
-  <form @click.prevent class="form">
+  <form class="form" @click.prevent>
     <h3 class="form__title">Название фильтра</h3>
     <div class="form__input">
       <input
@@ -9,21 +9,24 @@
         placeholder="Введите название"
       />
     </div>
-    <button @click="addFilter" class="form__btn btn">Сохранить</button>
+    <button class="form__btn btn" @click="addFilter">Сохранить</button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { mapMutations, mapGetters } from "vuex";
+import { defineComponent } from 'vue';
+import { mapMutations, mapGetters } from 'vuex';
 export default defineComponent({
   data() {
     return {
-      name: "" as String,
+      name: '' as string,
     };
   },
+  computed: {
+    ...mapGetters(['getTaskData']),
+  },
   methods: {
-    ...mapMutations(["SET_FILTERS", "CLOSE_MODAL"]),
+    ...mapMutations(['SET_FILTERS', 'CLOSE_MODAL']),
     addFilter(): void {
       this.SET_FILTERS({
         name: this.name,
@@ -31,11 +34,8 @@ export default defineComponent({
         searchQuery: this.getTaskData.searchQuery,
       });
       this.CLOSE_MODAL();
-      this.name = "";
+      this.name = '';
     },
-  },
-  computed: {
-    ...mapGetters(["getTaskData"]),
   },
 });
 </script>

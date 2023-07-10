@@ -14,44 +14,44 @@
         placeholder="Описание задачи"
       ></textarea>
     </div>
-    <button @click="createFormTask" class="form__btn btn">
+    <button class="form__btn btn" @click="createFormTask">
       Создать задачу
     </button>
   </form>
 </template>
 
 <script  lang="ts">
-import { defineComponent } from "vue";
-import { mapMutations, mapGetters } from "vuex";
+import { defineComponent } from 'vue';
+import { mapMutations, mapGetters } from 'vuex';
 export default defineComponent({
   data() {
     return {
-      name: "" as String,
-      desc: "" as String,
+      name: '' as string,
+      desc: '' as string,
     };
   },
+  computed: {
+    ...mapGetters(['getTaskData', 'getCurrentModal']),
+  },
   methods: {
-    ...mapMutations(["CREATE_TASK", "SET_TASK_DATA", "CLOSE_MODAL"]),
+    ...mapMutations(['CREATE_TASK', 'SET_TASK_DATA', 'CLOSE_MODAL']),
     createFormTask(): void {
       this.SET_TASK_DATA({
         id:
-          this.getCurrentModal == "taskModal"
+          this.getCurrentModal == 'taskModal'
             ? null
-            : this.getCurrentModal == "subTaskModal"
+            : this.getCurrentModal == 'subTaskModal'
             ? this.getTaskData.id
-            : "",
+            : '',
         name: this.name,
         desc: this.desc,
       });
 
       this.CREATE_TASK();
       this.CLOSE_MODAL();
-      this.name = "";
-      this.desc = "";
+      this.name = '';
+      this.desc = '';
     },
-  },
-  computed: {
-    ...mapGetters(["getTaskData", "getCurrentModal"]),
   },
 });
 </script>
