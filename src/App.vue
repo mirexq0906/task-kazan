@@ -8,7 +8,7 @@
           @click="OPEN_MODAL({ active: true, name: 'titleModal' })"
         >
           <span>Изменить</span>
-          <img src="./assets/gear.svg" alt="" />
+          <img src="assets/gear.svg" alt="" />
         </button>
       </div>
 

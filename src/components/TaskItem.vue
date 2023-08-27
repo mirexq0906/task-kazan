@@ -104,8 +104,6 @@ export default defineComponent({
     gap: 20px;
     margin-bottom: 20px;
   }
-  &__title {
-  }
   &__title-btn {
     flex-shrink: 0;
     span {
