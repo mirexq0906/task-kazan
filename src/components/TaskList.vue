@@ -47,7 +47,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .app__list {
-  min-height: 300px;
+  flex-grow: 1;
 }
 .task-list-item {
   display: inline-block;

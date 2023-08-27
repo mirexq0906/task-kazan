@@ -1,6 +1,6 @@
 <template>
   <section class="app">
-    <div class="container">
+    <div class="app__container container">
       <div class="app__box-title">
         <h1 class="app__title">{{ getTitle }}</h1>
         <button
@@ -140,6 +140,11 @@ export default defineComponent({
 @import './scss/style.scss';
 .app {
   padding: 40px 0;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+  }
   &__box-title {
     display: flex;
     align-items: center;
@@ -178,6 +183,7 @@ export default defineComponent({
     max-width: 840px;
     margin: 0 auto;
     gap: 30px;
+    margin-bottom: 20px;
     @media (max-width: 575px) {
       gap: 15px;
     }
