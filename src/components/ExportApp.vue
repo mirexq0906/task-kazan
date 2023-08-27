@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" @click="downloadProject">Скачать проект</button>
+  <button @click="downloadProject">Скачать проект</button>
 </template>
 
 <script lang="ts">

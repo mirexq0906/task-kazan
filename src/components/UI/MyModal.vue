@@ -45,6 +45,9 @@ export default defineComponent({
   padding: 100px 100px;
   overflow: auto;
   text-align: center;
+  @media (max-width: 575px) {
+    padding: 20px;
+  }
   &::before {
     content: '';
     display: inline-block;
@@ -69,6 +72,9 @@ export default defineComponent({
     transition: transform 0.4s ease;
     vertical-align: middle;
     text-align: left;
+    @media (max-width: 575px) {
+      padding: 60px 20px 20px 20px;
+    }
   }
   &__content-active {
     transform: scale(1);

@@ -4,10 +4,11 @@
       <div class="app__box-title">
         <h1 class="app__title">{{ getTitle }}</h1>
         <button
-          class="app__btn btn"
+          class="app__title-btn btn"
           @click="OPEN_MODAL({ active: true, name: 'titleModal' })"
         >
-          Изменить
+          <span>Изменить</span>
+          <img src="./assets/gear.svg" alt="" />
         </button>
       </div>
 
@@ -36,13 +37,13 @@
         </button>
 
         <button
-          class="btn"
+          class="app__btn btn"
           @click="OPEN_MODAL({ active: true, name: 'importModal' })"
         >
           Загрузить проект
         </button>
 
-        <export-app />
+        <export-app class="app__btn btn" />
       </div>
 
       <filter-list :filters="getFilters" @apply-filter="applyFilter" />
@@ -145,6 +146,29 @@ export default defineComponent({
     justify-content: center;
     gap: 30px;
     margin-bottom: 50px;
+    @media (max-width: 575px) {
+      margin-bottom: 20px;
+    }
+  }
+  &__title {
+    @media (max-width: 575px) {
+      font-size: 30px;
+    }
+  }
+  &__title-btn {
+    flex-shrink: 0;
+    span {
+      @media (max-width: 575px) {
+        display: none;
+      }
+    }
+    img {
+      display: none;
+      @media (max-width: 575px) {
+        display: block;
+        width: 23px;
+      }
+    }
   }
   &__row {
     display: flex;
@@ -152,17 +176,46 @@ export default defineComponent({
     justify-content: center;
     flex-wrap: wrap;
     max-width: 840px;
-    margin: 0 auto 30px auto;
+    margin: 0 auto;
     gap: 30px;
+    @media (max-width: 575px) {
+      gap: 15px;
+    }
   }
   &__search {
     width: 300px;
+    @media (max-width: 991px) {
+      width: 250px;
+    }
+    @media (max-width: 767px) {
+      width: calc(50% - 15px);
+    }
+    @media (max-width: 575px) {
+      width: 100%;
+    }
   }
   &__dropdown {
     width: 300px;
+    @media (max-width: 991px) {
+      width: 250px;
+    }
+    @media (max-width: 767px) {
+      width: calc(50% - 15px);
+    }
+    @media (max-width: 575px) {
+      width: 100%;
+    }
+  }
+  &__btn {
+    @media (max-width: 575px) {
+      width: 100%;
+    }
   }
   &__list {
-    margin-top: 20px;
+    margin-top: 50px;
+    @media (max-width: 575px) {
+      margin-top: 20px;
+    }
   }
   &__item:not(:last-child) {
     margin-bottom: 20px;

@@ -8,20 +8,21 @@
       <div class="task__box-title">
         <h3 class="task__title">{{ task.name }}</h3>
         <button
-          class="btn"
+          class="task__title-btn btn"
           @click="
             SET_TASK_DATA({ id: task.id });
             OPEN_MODAL({ active: true, name: 'taskTitleModal' });
           "
         >
-          Изменить
+          <span>Изменить</span>
+          <img src="../assets/gear.svg" alt="" />
         </button>
       </div>
       <p class="task__desc">{{ task.desc }}</p>
     </div>
     <div class="task__controls">
       <button
-        class="btn"
+        class="task__btn-create btn"
         @click="
           SET_TASK_DATA({ id: task.id });
           OPEN_MODAL({ active: true, name: 'subTaskModal' });
@@ -103,16 +104,45 @@ export default defineComponent({
     gap: 20px;
     margin-bottom: 20px;
   }
+  &__title {
+  }
+  &__title-btn {
+    flex-shrink: 0;
+    span {
+      @media (max-width: 575px) {
+        display: none;
+      }
+    }
+    img {
+      display: none;
+      @media (max-width: 575px) {
+        display: block;
+        width: 23px;
+      }
+    }
+  }
   &__controls {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px solid #323232;
+    @media (max-width: 575px) {
+      gap: 15px;
+    }
+  }
+  &__btn-create {
+    @media (max-width: 575px) {
+      width: 100%;
+    }
   }
   &__btn-delete {
     background: #dc3545;
+    @media (max-width: 575px) {
+      width: 100%;
+    }
   }
   &__subtask {
     margin-top: 20px;
